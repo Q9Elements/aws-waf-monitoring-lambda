@@ -3,6 +3,18 @@
 Here you can find source code of a custom AWS Lambda function that can be used to monitor
 AWS WAF findings and send updates to a dedicated Slack channel.
 
+* [Presentation](https://drive.google.com/file/d/1zL5CtqiGwfYc6137tWOGL1Xc-RBbGOxL/view?usp=drive_link)
+* [AWS The Safe Room stream](https://www.twitch.tv/videos/2091593554)
+
+
+![image](https://github.com/Q9Elements/aws-waf-monitoring-lambda/assets/27974884/3473e20f-93d3-440d-b2a2-623d6730f305)
+
+
+## Solution architecture
+
+![image](https://github.com/Q9Elements/aws-waf-monitoring-lambda/assets/27974884/2d1cdb77-6aef-4e8d-95ce-8fb01f2f4f81)
+
+
 ## Prerequisites
 
 * Node.JS v.18.x.x (recommended - _18.15.0_)
