@@ -119,7 +119,7 @@ async function updateIPSet({
 
 /**
  * This function converts IP addresses from the retrieved IPSet to the expected by the updateIPSet
- * operation format - Array of IPs to be included in the IPSet. 
+ * operation format - Array of IPs to be included in the IPSet.
  * @param {*} ipSetAddresses - list of IP addresses in the retrieved IPSet
  * @returns modified list of IPSet addresses
  */
