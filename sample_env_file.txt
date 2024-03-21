@@ -1,0 +1,21 @@
+# Below you can find sample .env file that can be used for
+# remote setup of this lambda functions, as well as local
+# development purposes
+AWS_ACCOUNT_ID=012345678911
+# NOTE: bucket name should not contain forward slash
+S3_AWS_WAF_LOGS_BUCKET_NAME=aws-waf-logs-sample-bucket
+# This folder will be used to store processed AWS WAF log records
+# it should be created inside the AWS WAF Logs bucket
+# NOTE: folder name should not contain forward slash
+S3_UPLOAD_FOLDER_NAME=waf-logs-processor-files
+# If set to false, processed logs won't be uploaded to S3
+SEND_PROCESSED_DATA_TO_S3=true
+# Path to the folder with WebACL logs
+S3_AWS_WAF_LOGS_BUCKET_FOLDER_PREFIX=WAFLogs/us-east-1/AWSWAFSecurityAutomations/
+LOG_LEVEL=debug
+# Below setting should be set only during run inisde AWS Account
+#TEMP_DIR_NAME=/tmp/temp_files
+# Name of the environment/account where the lambda is deployed
+ENV_NAME=Production
+# Slack webhook url
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX

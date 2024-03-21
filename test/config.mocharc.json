@@ -1,0 +1,10 @@
+{
+    "diff": true,
+    "recursive": true,
+    "exit": true,
+    "full-trace": true,
+    "ignore": [],
+    "timeout": 99999,
+    "color": true,
+    "file": "./test/aws-sdk-mock/mockAWSSdkServices.js"
+}

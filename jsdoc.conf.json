@@ -1,0 +1,14 @@
+{
+    "source": {
+        "include": ["./src"],
+        "exclude": [
+            "./node_modules",
+            "index.js",
+            "package.json",
+            "package-lock.json",
+            "./docs"
+        ],
+        "includePattern": ".+\\.js(doc|x)?$"
+    },
+    "recurseDepth": 10
+}

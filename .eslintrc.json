@@ -1,0 +1,50 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true
+    },
+    "extends": [
+        "airbnb-base",
+        "plugin:mocha/recommended"
+    ],
+    "plugins": [
+        "mocha"
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "rules": {
+        "no-console": "off",
+        "indent": ["error", 4],
+        "max-len": ["error", 130],
+        "function-paren-newline": "off",
+        "linebreak-style": "off",
+        "no-else-return": "off",
+        "global-require": "off",
+        "import/newline-after-import": "off",
+        "nonblock-statement-body-position": "off",
+        "func-names": "off",
+        "space-before-function-paren": "off",
+        "curly": "off",
+        "prefer-arrow-callback": "off",
+        "no-param-reassign": "off",
+        "arrow-body-style": "off",
+        "prefer-template": "off",
+        "no-restricted-syntax": "off",
+        "import/no-dynamic-require": "off",
+        "no-loop-func": "off",
+        "one-var": "off",
+        "one-var-declaration-per-line": "off",
+        "no-await-in-loop": "off",
+        "mocha/no-mocha-arrows": "off",
+        "no-unused-expressions": "off",
+        "dot-notation": "off",
+        "import/no-extraneous-dependencies": "off"
+    },
+    "ignorePatterns": [
+        "test/aws-waf-logs-samples/*",
+        "temp_files/*",
+        "node_modules/*"
+    ]
+}

@@ -1,0 +1,54 @@
+service: AWSWAFMonitoring
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  logRetentionInDays: 90
+  environment:
+    AWS_ACCOUNT_ID: ${file(./stages/${opt:stage}.yml):AWS_ACCOUNT_ID}
+    region: ${file(./stages/${opt:stage}.yml):AWS_REGION}
+    iamRoleArnLambda: ${file(./stages/${opt:stage}.yml):iamRoleArnLambda}
+    ENV_NAME: ${file(./stages/${opt:stage}.yml):ENV_NAME}
+    LOG_LEVEL: ${file(./stages/${opt:stage}.yml):LOG_LEVEL}
+    S3_AWS_WAF_LOGS_BUCKET_NAME: ${file(./stages/${opt:stage}.yml):S3_AWS_WAF_LOGS_BUCKET_NAME}
+    S3_UPLOAD_FOLDER_NAME: ${file(./stages/${opt:stage}.yml):S3_UPLOAD_FOLDER_NAME}
+    S3_AWS_WAF_LOGS_BUCKET_FOLDER_PREFIX: ${file(./stages/${opt:stage}.yml):S3_AWS_WAF_LOGS_BUCKET_FOLDER_PREFIX}
+    SLACK_WEBHOOK_URL: ${file(./stages/${opt:stage}.yml):SLACK_WEBHOOK_URL}
+    TEMP_DIR_NAME: ${file(./stages/${opt:stage}.yml):TEMP_DIR_NAME}
+  deploymentBucket:
+    name: serverless-artifacts-${self:provider.environment.AWS_ACCOUNT_ID}-${self:provider.environment.region}
+  role: ${self:provider.environment.iamRoleArnLambda}
+  region: ${self:provider.environment.region}
+  versionFunctions: false
+
+plugins:
+  - serverless-prune-plugin
+
+custom:
+  prune:
+    automatic: true
+    number: 1
+
+package:
+  individually: true
+  excludeDevDependencies: true
+  include:
+    - ./stages/${opt:stage}.yml
+
+functions:
+  AWSWAFMonitoring:
+    handler: index.handler
+    description: This is a custom AWS WAF monitoring Lambda function solution
+    package:
+      include:
+        - .*
+        - test/**
+        - src/**
+    memorySize: 512
+    ephemeralStorageSize: 2048
+    timeout: 300
+    events:
+      - schedule: cron(1 * ? * * *)
+      - schedule: cron(30 9 ? * * *)

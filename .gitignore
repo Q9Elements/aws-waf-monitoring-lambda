@@ -1,0 +1,7 @@
+.env
+node_modules/
+package-lock.json
+# produced by the lambda files
+temp_files/*
+# JSDoc files
+docs/*

@@ -1,0 +1,11 @@
+AWS_ACCOUNT_ID: '012345678911'
+AWS_REGION: us-east-1
+iamRoleArnLambda: arn:aws:iam::012345678911:role/WAFMonitoringLambdaRole
+ENV_NAME: Prod
+LOG_LEVEL: debug
+S3_AWS_WAF_LOGS_BUCKET_NAME: aws-waf-logs-sample-bucket
+S3_UPLOAD_FOLDER_NAME: waf-logs-processor-files
+SEND_PROCESSED_DATA_TO_S3: 'false'
+S3_AWS_WAF_LOGS_BUCKET_FOLDER_PREFIX: WAFLogs/us-east-1/AWSWAFSecurityAutomations/
+TEMP_DIR_NAME: /tmp/temp_files
+SLACK_WEBHOOK_URL: 'https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX'
