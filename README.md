@@ -45,6 +45,48 @@ examples: _IP Blacklisting: updated function for retrieving blacklisted IPs_, _-
 2. Install modules using `npm i` command.
 3. Run `npm run generate-documentation`. Documentation will be available in the _docs_ folder.
 
+## Lambda role permissions
+
+In order to start using this lambda function you should create a dedicated IAM role with the following permissions:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "S3WAFLogsBucketActions"
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:ListBucket",
+                "s3:GetObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<aws-waf-logs-bucket-name>/waf-logs-processor-files/*",
+                "arn:aws:s3:::<aws-waf-logs-bucket-name>",
+                "arn:aws:s3:::<aws-waf-logs-bucket-name>/AWSLogs/*"
+            ]
+        },
+        {
+            "Sid": "WAFIPSetOperations",
+            "Effect": "Allow",
+            "Action": [
+                "wafv2:GetIPSet",
+                "wafv2:UpdateIPSet",
+                "wafv2:ListIPSets"
+            ],
+            "Resource": [
+                "arn:aws:wafv2:<region>:<account_id>:regional/ipset/*/*"
+            ]
+        }
+    ]
+}
+```
+
+Please note that this is a basic set of permissions and it can be extended if needed (for example, when you enable
+CloudWatch logs for the lambda function).
+Once the role is created, please ensure that you've set the correct name in the appropriate [config file](https://github.com/Q9Elements/aws-waf-monitoring-lambda/blob/master/stages/production.yml#L3)
+
 ## How to generate a new prod version of lambda function
 
 Please note that an alternative way is to create a CodeBuild that will deploy this function using
