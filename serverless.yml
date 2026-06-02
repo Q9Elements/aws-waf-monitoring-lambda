@@ -17,6 +17,7 @@ provider:
     S3_AWS_WAF_LOGS_BUCKET_FOLDER_PREFIX: ${file(./stages/${opt:stage}.yml):S3_AWS_WAF_LOGS_BUCKET_FOLDER_PREFIX}
     SLACK_WEBHOOK_URL: ${file(./stages/${opt:stage}.yml):SLACK_WEBHOOK_URL}
     TEMP_DIR_NAME: ${file(./stages/${opt:stage}.yml):TEMP_DIR_NAME}
+    AWS_WAF_IP_SETS_SCOPE: ${file(./stages/${opt:stage}.yml):AWS_WAF_IP_SETS_SCOPE}
   deploymentBucket:
     name: serverless-artifacts-${self:provider.environment.AWS_ACCOUNT_ID}-${self:provider.environment.region}
   role: ${self:provider.environment.iamRoleArnLambda}

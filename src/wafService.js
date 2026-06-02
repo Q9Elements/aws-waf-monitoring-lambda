@@ -26,7 +26,7 @@ function initialiseWAFV2Client() {
  * or for a regional application
  * @returns list of retrieved IP sets or an empty array in case of error
  */
-async function getListOfAWSWAFIPSets({ ipSetScope = 'REGIONAL' } = {}) {
+async function getListOfAWSWAFIPSets({ ipSetScope = constants.AWS_WAF_IP_SETS_SCOPE } = {}) {
     console.log('[WAFService] Getting a list of IPSets...');
     let ipSetsList;
     try {
@@ -52,7 +52,7 @@ async function getListOfAWSWAFIPSets({ ipSetScope = 'REGIONAL' } = {}) {
  * ipSetName - name of the target IP set; ipSetId - id of the target IP set
  * @returns details of the specified IP Set
  */
-async function getIPSet({ ipSetName, ipSetId, ipSetScope = 'REGIONAL' } = {}) {
+async function getIPSet({ ipSetName, ipSetId, ipSetScope = constants.AWS_WAF_IP_SETS_SCOPE } = {}) {
     console.log('[WAFService] Getting IPSet details...');
     console.debug(`[WAFService] IPSet name: ${ipSetName}`);
 
@@ -91,7 +91,7 @@ async function updateIPSet({
     ipSetAddresses,
     ipSetDescription,
     ipSetLockToken,
-    ipSetScope = 'REGIONAL',
+    ipSetScope = constants.AWS_WAF_IP_SETS_SCOPE,
 } = {}) {
     console.log('[WAFService] Updating the specified IPSet...');
     let isUpdateSucceeded;

@@ -19,3 +19,6 @@ LOG_LEVEL=debug
 ENV_NAME=Production
 # Slack webhook url
 SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+# AWS WAF IpSet scope, can be CLOUDFRONT or REGIONAL, depending
+# on the associated with AWS WAF resources
+AWS_WAF_IP_SETS_SCOPE=REGIONAL

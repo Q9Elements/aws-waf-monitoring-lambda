@@ -17,7 +17,7 @@ AWS WAF findings and send updates to a dedicated Slack channel.
 
 ## Prerequisites
 
-* Node.JS v.18.x.x (recommended - _18.15.0_)
+* Node.JS v.22.x.x (recommended - _22.22.0_)
 * Any IDE that can be used to work with the function code (_VSCode_, _WebStorm_)
 * Create a copy of _sample_env_file.txt_ file and name it _.env_. Add required env variables.
 **NOTE**: avoid using real Slack webhook url in order to not submit a large number of test

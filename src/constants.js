@@ -35,6 +35,7 @@ const NO_DETECTIONS_SLACK_MESSAGE_TEMPLATE = [{
  * AWS WAF IPSets details
  */
 const AWS_WAF_IPV4_BLACKLIST_NAME = process.env.AWS_WAF_IPV4_BLACKLIST_NAME || 'AWSWAFBlacklistSetIPV4';
+const AWS_WAF_IP_SETS_SCOPE = process.env.AWS_WAF_IP_SETS_SCOPE || 'REGIONAL';
 
 /**
  * Blacklisting functions settings
@@ -102,6 +103,7 @@ module.exports = {
      * AWS WAF IPSets details
      */
     AWS_WAF_IPV4_BLACKLIST_NAME,
+    AWS_WAF_IP_SETS_SCOPE,
     /**
      * AWS WAF reports analytics settings
      */
