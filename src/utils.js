@@ -36,7 +36,6 @@ function generateGroupsForDetectedIssues() {
         sqlInjectionFindings: [],
         blackListRuleFindings: [],
         ipReputationRuleFindings: [],
-        lambdaAutoBlocklistFindings: [],
     };
 }
 
@@ -47,7 +46,7 @@ function generateGroupsForDetectedIssues() {
  */
 function generateGroupsForAnalytics() {
     const groupsList = generateGroupsForDetectedIssues();
-    _.forEach(groupsList, function(value, key) {
+    _.forEach(groupsList, function (value, key) {
         groupsList[key] = {};
     });
     return groupsList;
@@ -61,7 +60,7 @@ function generateGroupsForAnalytics() {
 function generateGroupsForStatistics() {
     const groupsFindingsList = generateGroupsForDetectedIssues();
     const groupsStatistics = {};
-    _.forEach(groupsFindingsList, function(value, key) {
+    _.forEach(groupsFindingsList, function (value, key) {
         groupsStatistics[key.replace('Findings', 'Statistics')] = {};
     });
     return groupsStatistics;

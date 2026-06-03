@@ -62,18 +62,18 @@ function formatLogRecord(loggedRequest) {
 function addFindingToDedicatedList({ formattedLogRecord, findingsGroups }) {
     console.log('[logRecordsProcessor|worker-pool] Adding formated log to a dedicated list...');
     switch (formattedLogRecord.ruleId) {
-    case 'AWSWAFSecurityAutomationsIPReputationListsRule':
-        findingsGroups.ipReputationRuleFindings.push(formattedLogRecord); break;
-    case 'AWSWAFSecurityAutomationsSqlInjectionRule':
-        findingsGroups.sqlInjectionFindings.push(formattedLogRecord); break;
-    case 'XSSProtectionRule':
-        findingsGroups.xssFindings.push(formattedLogRecord); break;
-    case 'AWSWAFSecurityAutomationsScannersAndProbesRule':
-        findingsGroups.scannersAndProbesFindings.push(formattedLogRecord); break;
-    case 'LambdaAutoBlocklist':
-        findingsGroups.blackListRuleFindings.push(formattedLogRecord); break;
-    // eslint-disable-next-line no-empty
-    default: {}
+        case 'AWSWAFSecurityAutomationsIPReputationListsRule':
+            findingsGroups.ipReputationRuleFindings.push(formattedLogRecord); break;
+        case 'AWSWAFSecurityAutomationsSqlInjectionRule':
+            findingsGroups.sqlInjectionFindings.push(formattedLogRecord); break;
+        case 'AWSWAFSecurityAutomationsXSSRule':
+            findingsGroups.xssFindings.push(formattedLogRecord); break;
+        case 'AWSWAFSecurityAutomationsScannersAndProbesRule':
+            findingsGroups.scannersAndProbesFindings.push(formattedLogRecord); break;
+        case 'AWSWAFSecurityAutomationsBlacklistRule':
+            findingsGroups.blackListRuleFindings.push(formattedLogRecord); break;
+        // eslint-disable-next-line no-empty
+        default: { }
     }
 }
 
@@ -106,7 +106,7 @@ function processAWSWAFFindings({ logRecords, findingsGroups }) {
     }
 }
 
-module.exports = async(logRecords) => {
+module.exports = async (logRecords) => {
     const findingsGroups = utils.generateGroupsForDetectedIssues();
     processAWSWAFFindings({ logRecords, findingsGroups });
     return findingsGroups;
