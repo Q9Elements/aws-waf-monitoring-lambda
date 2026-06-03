@@ -66,11 +66,11 @@ function addFindingToDedicatedList({ formattedLogRecord, findingsGroups }) {
         findingsGroups.ipReputationRuleFindings.push(formattedLogRecord); break;
     case 'AWSWAFSecurityAutomationsSqlInjectionRule':
         findingsGroups.sqlInjectionFindings.push(formattedLogRecord); break;
-    case 'AWSWAFSecurityAutomationsXSSRule':
+    case 'XSSProtectionRule':
         findingsGroups.xssFindings.push(formattedLogRecord); break;
     case 'AWSWAFSecurityAutomationsScannersAndProbesRule':
         findingsGroups.scannersAndProbesFindings.push(formattedLogRecord); break;
-    case 'AWSWAFSecurityAutomationsBlacklistRule':
+    case 'LambdaAutoBlocklist':
         findingsGroups.blackListRuleFindings.push(formattedLogRecord); break;
     // eslint-disable-next-line no-empty
     default: {}

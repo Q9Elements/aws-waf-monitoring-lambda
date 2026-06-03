@@ -7,6 +7,7 @@ const {
     UpdateIPSetCommand,
 } = require('@aws-sdk/client-wafv2');
 const _ = require('lodash');
+const fs = require('fs');
 const path = require('path');
 const statisticsService = require('./statisticsService');
 const constants = require('./constants');
@@ -37,6 +38,8 @@ async function getListOfAWSWAFIPSets({ ipSetScope = constants.AWS_WAF_IP_SETS_SC
         };
         const command = new ListIPSetsCommand(params);
         const response = await wafv2Client.send(command);
+
+        console.debug('[WAFService] Retrieved IP sets response:', response);
 
         ipSetsList = response.IPSets;
     } catch (err) {
@@ -97,9 +100,13 @@ async function updateIPSet({
     let isUpdateSucceeded;
     try {
         const wafv2Client = initialiseWAFV2Client();
+        // AWS WAF rejects an empty description string, so omit it when blank
+        const sanitisedDescription = (ipSetDescription && ipSetDescription.trim().length > 0)
+            ? ipSetDescription.trim()
+            : undefined;
         const params = {
             Addresses: ipSetAddresses,
-            Description: ipSetDescription,
+            ...(sanitisedDescription !== undefined && { Description: sanitisedDescription }),
             Id: ipSetId,
             LockToken: ipSetLockToken,
             Name: ipSetName,
@@ -243,8 +250,24 @@ function addMissingIPsFromIPSetToFile({ ipSetAddresses, existingBlacklistedIPs }
  */
 async function makeBlacklistsUpToDate() {
     console.log('[WAFService] Making existing blacklists up to date...');
-    const existingBlacklistedIPs = require(path.resolve(__dirname,
-        `${constants.TEMP_DIR_NAME}/${constants.OUTPUT_BLACKLISTED_IPS_FILE_NAME}`));
+    const blacklistedIPsFilePath = path.resolve(__dirname,
+        `${constants.TEMP_DIR_NAME}/${constants.OUTPUT_BLACKLISTED_IPS_FILE_NAME}`);
+    let existingBlacklistedIPs;
+    try {
+        const fileContent = fs.readFileSync(blacklistedIPsFilePath, 'utf8');
+        existingBlacklistedIPs = JSON.parse(fileContent);
+        console.log(`[WAFService] Successfully loaded ${existingBlacklistedIPs.length} blacklisted IP(s) from file`);
+    } catch (err) {
+        console.log(`[WAFService] Could not read or parse ${constants.OUTPUT_BLACKLISTED_IPS_FILE_NAME} (${err.message}). Creating an empty file and continuing...`);
+        existingBlacklistedIPs = [];
+        try {
+            fs.mkdirSync(path.dirname(blacklistedIPsFilePath), { recursive: true });
+            fs.writeFileSync(blacklistedIPsFilePath, JSON.stringify([]), 'utf8');
+            console.log(`[WAFService] Created empty ${constants.OUTPUT_BLACKLISTED_IPS_FILE_NAME} at ${blacklistedIPsFilePath}`);
+        } catch (writeErr) {
+            console.log(`[WAFService] Failed to create empty ${constants.OUTPUT_BLACKLISTED_IPS_FILE_NAME}: ${writeErr.message}`);
+        }
+    }
     const ipSetsList = await getListOfAWSWAFIPSets();
     let updatedBlacklistedIPs = [...existingBlacklistedIPs];
 
@@ -261,7 +284,8 @@ async function makeBlacklistsUpToDate() {
         });
 
         console.debug(`[WAFService] Target IP set addresses list before update: ${tgtIpSetDetails.IPSet.Addresses}`);
-        let updatedIPSetAddresses = prepareExistingIPSetAddressesForUpdate(tgtIpSetDetails.IPSet.Addresses);
+        const originalIPSetAddresses = prepareExistingIPSetAddressesForUpdate(tgtIpSetDetails.IPSet.Addresses);
+        let updatedIPSetAddresses = [...originalIPSetAddresses];
 
         for (const ipRecord of existingBlacklistedIPs)
             if (checkIfBlacklistingPeriodExpired(ipRecord)) {
@@ -271,6 +295,17 @@ async function makeBlacklistsUpToDate() {
         updatedBlacklistedIPs = addMissingIPsFromIPSetToFile({
             ipSetAddresses: updatedIPSetAddresses, existingBlacklistedIPs: updatedBlacklistedIPs,
         });
+
+        const ipSetChanged = !_.isEqual(
+            [...originalIPSetAddresses].sort(),
+            [...updatedIPSetAddresses].sort(),
+        );
+
+        if (!ipSetChanged) {
+            console.log('[WAFService] No changes detected in IP set addresses, skipping update.');
+            statisticsService.rewriteBlacklistedIPsFileAfterSync(updatedBlacklistedIPs);
+            return true;
+        }
 
         const isUpdateSucceeded = await updateIPSet({
             ipSetName: tgtIpSetDetails.IPSet.Name,

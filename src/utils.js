@@ -36,6 +36,7 @@ function generateGroupsForDetectedIssues() {
         sqlInjectionFindings: [],
         blackListRuleFindings: [],
         ipReputationRuleFindings: [],
+        lambdaAutoBlocklistFindings: [],
     };
 }
 

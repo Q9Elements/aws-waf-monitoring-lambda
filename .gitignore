@@ -5,3 +5,5 @@ package-lock.json
 temp_files/*
 # JSDoc files
 docs/*
+# Zip files
+aws-waf-monitoring-lambda.zip
