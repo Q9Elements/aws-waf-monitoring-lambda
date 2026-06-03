@@ -7,7 +7,8 @@
     "test": "./node_modules/.bin/mocha --config ./test/config.mocharc.json ./test/",
     "generate-documentation": "node_modules/.bin/jsdoc -r -c jsdoc.conf.json -d docs || echo 'Ensure that you have JSDoc installed'",
     "build": "rm -rf node_modules/ && npm cache clean --force && npm install --production",
-    "lint": "node_modules/.bin/eslint \"**/*.js\""
+    "lint": "node_modules/.bin/eslint \"**/*.js\"",
+    "create-zip-for-lambda-service": "zip -r aws-waf-monitoring-lambda.zip ./ --exclude .git/\\* .env"
   },
   "keywords": [],
   "author": "Ihor Sasovets",
